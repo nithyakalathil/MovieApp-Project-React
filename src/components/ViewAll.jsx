@@ -1,15 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
+import axios from 'axios'
 
 const ViewAll = () => {
 
     const [data,changedata]=useState(
 
-        [
-            {"name":"kathal"},{"name":"kathi"},{"name":"kathi"},{"name":"kathi"},{"name":"kathi"},{"name":"kathi"},{"name":"kathi"},{"name":"kathi"},{"name":"kathi"},{"name":"kathi"},{"name":"kathi"}
-        ]
+      { "articles":[] }
 
     )
+    const featchdata=()=>{
+        axios.get("https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=9b6ac262eea44bcbbf80ae1b064f631d").then(
+      
+      
+      (response)=>{
+        console.log(response.data)
+        changedata(response.data)}
+       
+        ).catch()
+      }
+
+    useEffect(()=>{featchdata()},[])
+
   return (
     <div>
 
@@ -22,15 +34,15 @@ const ViewAll = () => {
 
 <div className="row g-3">
    
-{data.map((value,index)=>{return  <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+{data.articles.map((value,index)=>{return  <div className="col col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
 
 
 <div class="card" >
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTaH7d9_Zaw5j-8mNbUZoZgYYvhni5vK3fsQ&s" class="card-img-top" alt="..."/>
+<img src={value.urlToImage} class="card-img-top" alt="..."/>
 <div class="card-body">
-<h5 class="card-title">Jungle cruise</h5>
+<h5 class="card-title">{value.title}</h5>
 <p class="card-text">{value.name}</p>
-<a href="#" class="btn btn-primary">Book Ticket</a>
+<a href="#" class="btn btn-primary">View </a>
 </div>
 </div>
 
